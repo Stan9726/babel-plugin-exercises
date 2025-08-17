@@ -1,0 +1,14 @@
+{
+  "name": "babel-plugin-exercises",
+  "description": "A repository for babel plugin exercises.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "babel",
+    "plugin"
+  ],
+  "author": "Stan",
+  "license": "ISC"
+}
