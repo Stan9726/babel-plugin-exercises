@@ -10,5 +10,13 @@
     "plugin"
   ],
   "author": "Stan",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.28.3",
+    "@babel/generator": "^7.28.3",
+    "@babel/parser": "^7.28.3",
+    "@babel/template": "^7.27.2",
+    "@babel/traverse": "^7.28.3",
+    "@babel/types": "^7.28.2"
+  }
 }
