@@ -28,8 +28,8 @@ module.exports = (Parser) => {
         }
 
         parseXxxxStatement() {
-            this.next();
-            return this.finishNode({ value: 'xxxx' }, 'XxxxStatement');
+            this.next(); // 消费当前 token 让 parser 指向下一 token
+            return this.finishNode({ value: 'xxxx' }, 'XxxxStatement'); // 创建一个 XxxxStatement 节点并标注 type value start end
         }
     };
 };

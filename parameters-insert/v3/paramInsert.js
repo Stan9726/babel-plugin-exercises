@@ -52,7 +52,7 @@ traverse(ast, {
             newNode.isNew = true;
             if (path.findParent((path) => path.isJSXElement())) {
                 path.replaceWith(arrayExpression([newNode, path.node]));
-                path.skip();
+                path.skip(); // 当前节点从 console 变成 array 不再处理 array 直接跳过
             } else {
                 path.insertBefore(expressionStatement(newNode));
             }
