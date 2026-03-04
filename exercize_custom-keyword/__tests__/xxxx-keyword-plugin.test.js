@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 const acorn = require('acorn');
-const XxxxKeywordPlugin = require('../XxxxKeywordPlugin');
+const XxxxKeywordPlugin = require('../xxxx-keyword-plugin');
 
 describe('XxxxKeywordPlugin', () => {
     it('should parse xxxx as a keyword', () => {

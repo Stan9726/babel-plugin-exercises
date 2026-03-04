@@ -1,5 +1,5 @@
 const acorn = require('acorn');
-const XxxxKeywordPlugin = require('./XxxxKeywordPlugin');
+const XxxxKeywordPlugin = require('./xxxx-keyword-plugin');
 
 const Parser = acorn.Parser;
 const newParser = Parser.extend(XxxxKeywordPlugin);
