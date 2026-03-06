@@ -5,8 +5,17 @@ const path = require('path');
 let intlKeyIndex = 0;
 const nextIntlKey = () => `auto_intl_key_${intlKeyIndex++}`;
 
+const resetIntlKeyIndex = () => {
+    intlKeyIndex = 0;
+};
+
 const autoI18nPlugin = declare((api, options, dirname) => {
     api.assertVersion(7);
+
+    // 测试模式：重置计数器
+    if (options.resetIndex) {
+        resetIntlKeyIndex();
+    }
 
     // 校验必需参数
     if (!options.outputDir) {
