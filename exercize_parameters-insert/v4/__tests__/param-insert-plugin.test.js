@@ -13,7 +13,7 @@ describe('paramInsertPlugin', () => {
     it('should insert filename and line info before console.log', () => {
         const code = 'console.log("hello")';
         const result = transform(code);
-        
+
         expect(result.code).toContain('console.log');
         expect(result.code).toContain('filename:');
         expect(result.code).toContain('test.js');
@@ -22,7 +22,7 @@ describe('paramInsertPlugin', () => {
     it('should insert info before console.info', () => {
         const code = 'console.info("info message")';
         const result = transform(code);
-        
+
         expect(result.code).toContain('console.log');
         expect(result.code).toContain('info message');
     });
@@ -30,7 +30,7 @@ describe('paramInsertPlugin', () => {
     it('should insert info before console.error', () => {
         const code = 'console.error("error message")';
         const result = transform(code);
-        
+
         expect(result.code).toContain('console.log');
         expect(result.code).toContain('error message');
     });
@@ -38,7 +38,7 @@ describe('paramInsertPlugin', () => {
     it('should insert info before console.debug', () => {
         const code = 'console.debug("debug message")';
         const result = transform(code);
-        
+
         expect(result.code).toContain('console.log');
         expect(result.code).toContain('debug message');
     });
@@ -46,14 +46,14 @@ describe('paramInsertPlugin', () => {
     it('should not transform non-console calls', () => {
         const code = 'myFunction("test")';
         const result = transform(code);
-        
+
         expect(result.code).toBe('myFunction("test");');
     });
 
     it('should handle multiple console calls', () => {
         const code = 'console.log("a"); console.log("b");';
         const result = transform(code);
-        
+
         const matches = result.code.match(/console\.log/g);
         expect(matches).toHaveLength(4);
     });

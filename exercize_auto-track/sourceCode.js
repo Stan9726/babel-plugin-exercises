@@ -3,7 +3,7 @@ import * as bb from 'bb';
 import { cc } from 'cc';
 import 'dd';
 
-function a () {
+function a() {
     console.log('aaa');
 }
 
@@ -17,4 +17,4 @@ const c = () => 'ccc';
 
 const d = function () {
     console.log('ddd');
-}
+};

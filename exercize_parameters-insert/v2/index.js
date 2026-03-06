@@ -26,18 +26,14 @@ const ast = parse(sourceCode, {
     plugins: ['jsx'],
 });
 
-const targetCalleeName = ['log', 'info', 'error', 'debug'].map(
-    (name) => `console.${name}`
-);
+const targetCalleeName = ['log', 'info', 'error', 'debug'].map((name) => `console.${name}`);
 
 traverse(ast, {
     CallExpression(path, state) {
         const calleeName = generate(path.node.callee).code;
         if (targetCalleeName.includes(calleeName)) {
             const { line, column } = path.node.loc.start;
-            path.node.arguments.unshift(
-                stringLiteral(`filename: (${line}, ${column})`)
-            );
+            path.node.arguments.unshift(stringLiteral(`filename: (${line}, ${column})`));
         }
     },
 });

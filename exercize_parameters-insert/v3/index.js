@@ -33,9 +33,7 @@ const ast = parse(sourceCode, {
     plugins: ['jsx'],
 });
 
-const targetCalleeName = ['log', 'info', 'error', 'debug'].map(
-    (name) => `console.${name}`
-);
+const targetCalleeName = ['log', 'info', 'error', 'debug'].map((name) => `console.${name}`);
 
 traverse(ast, {
     CallExpression(path, state) {

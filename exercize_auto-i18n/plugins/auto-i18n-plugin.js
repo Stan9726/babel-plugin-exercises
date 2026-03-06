@@ -120,9 +120,7 @@ const autoI18nPlugin = declare((api, options, dirname) => {
                                     specifier.isImportNamespaceSpecifier() ||
                                     specifier.isImportSpecifier()
                                 ) {
-                                    state.intlUid = specifier
-                                        .get('local')
-                                        .toString();
+                                    state.intlUid = specifier.get('local').toString();
                                 }
 
                                 isImported = true;
@@ -136,9 +134,7 @@ const autoI18nPlugin = declare((api, options, dirname) => {
                     if (!isImported) {
                         // scope.generateUid 生成唯一的标识符，避免命名冲突
                         const uid = path.scope.generateUid('intl');
-                        const importAst = api.template.ast(
-                            `import ${uid} from '${moduleSource}';`
-                        );
+                        const importAst = api.template.ast(`import ${uid} from '${moduleSource}';`);
                         // unshift 添加到数组开头
                         path.node.body.unshift(importAst);
                         state.intlUid = uid;
@@ -151,26 +147,20 @@ const autoI18nPlugin = declare((api, options, dirname) => {
                         'StringLiteral|TemplateLiteral|JSXText'(path) {
                             // 检查 i18n-disable 注释
                             if (path.node.leadingComments) {
-                                path.node.leadingComments =
-                                    path.node.leadingComments.filter(
-                                        (comment) => {
-                                            if (
-                                                comment.value.trim() ===
-                                                'i18n-disable'
-                                            ) {
-                                                // 标记该节点跳过转换
-                                                path.node.skipTransform = true;
-                                                return false; // 从数组中移除该注释
-                                            }
-                                            return true;
+                                path.node.leadingComments = path.node.leadingComments.filter(
+                                    (comment) => {
+                                        if (comment.value.trim() === 'i18n-disable') {
+                                            // 标记该节点跳过转换
+                                            path.node.skipTransform = true;
+                                            return false; // 从数组中移除该注释
                                         }
-                                    );
+                                        return true;
+                                    }
+                                );
                             }
 
                             // 跳过 import 语句中的字符串（如 import 'intl'）
-                            if (
-                                path.findParent((p) => p.isImportDeclaration())
-                            ) {
+                            if (path.findParent((p) => p.isImportDeclaration())) {
                                 path.node.skipTransform = true;
                             }
                         },
@@ -207,11 +197,7 @@ const autoI18nPlugin = declare((api, options, dirname) => {
                 save(state.file, key, path.node.value);
 
                 // 替换为 intl.t() 调用
-                const replaceExpr = getReplaceExpression(
-                    path,
-                    key,
-                    state.intlUid
-                );
+                const replaceExpr = getReplaceExpression(path, key, state.intlUid);
                 path.replaceWith(replaceExpr);
 
                 // skip() 阻止子节点遍历（字符串没有子节点，但这是好习惯）
@@ -250,9 +236,7 @@ const autoI18nPlugin = declare((api, options, dirname) => {
                         .get('quasis')
                         .map((elem, index) => {
                             const text = elem.node.value.raw;
-                            return index < expressions.length
-                                ? text + '{' + index + '}'
-                                : text;
+                            return index < expressions.length ? text + '{' + index + '}' : text;
                         })
                         .join('');
                 }
@@ -260,11 +244,7 @@ const autoI18nPlugin = declare((api, options, dirname) => {
                 const key = nextIntlKey();
                 save(state.file, key, value);
 
-                const replaceExpr = getReplaceExpression(
-                    path,
-                    key,
-                    state.intlUid
-                );
+                const replaceExpr = getReplaceExpression(path, key, state.intlUid);
                 path.replaceWith(replaceExpr);
                 path.skip();
             },
@@ -295,11 +275,7 @@ const autoI18nPlugin = declare((api, options, dirname) => {
                     const key = nextIntlKey();
                     save(state.file, key, value);
 
-                    const replaceExpr = getReplaceExpression(
-                        path,
-                        key,
-                        state.intlUid
-                    );
+                    const replaceExpr = getReplaceExpression(path, key, state.intlUid);
                     path.replaceWith(replaceExpr);
                     path.skip();
                 }
@@ -322,16 +298,8 @@ const autoI18nPlugin = declare((api, options, dirname) => {
 
             // 输出到指定目录
             fs.mkdirSync(options.outputDir, { recursive: true });
-            fs.writeFileSync(
-                path.join(options.outputDir, 'zh_CN.js'),
-                content,
-                'utf-8'
-            );
-            fs.writeFileSync(
-                path.join(options.outputDir, 'en_US.js'),
-                content,
-                'utf-8'
-            );
+            fs.writeFileSync(path.join(options.outputDir, 'zh_CN.js'), content, 'utf-8');
+            fs.writeFileSync(path.join(options.outputDir, 'en_US.js'), content, 'utf-8');
         },
     };
 });

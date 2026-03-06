@@ -1,29 +1,43 @@
 {
-  "name": "babel-plugin-exercises",
-  "description": "A repository for babel plugin exercises.",
-  "main": "index.js",
-  "scripts": {
-    "test": "vitest run",
-    "test:watch": "vitest"
-  },
-  "keywords": [
-    "babel",
-    "plugin"
-  ],
-  "author": "Stan",
-  "license": "ISC",
-  "dependencies": {
-    "@babel/core": "^7.28.3",
-    "@babel/generator": "^7.28.3",
-    "@babel/helper-module-imports": "^7.27.1",
-    "@babel/helper-plugin-utils": "^7.28.6",
-    "@babel/parser": "^7.28.3",
-    "@babel/template": "^7.27.2",
-    "@babel/traverse": "^7.28.3",
-    "@babel/types": "^7.28.2",
-    "acorn": "^8.15.0"
-  },
-  "devDependencies": {
-    "vitest": "^4.0.18"
-  }
+    "name": "babel-plugin-exercises",
+    "description": "A repository for babel plugin exercises.",
+    "main": "index.js",
+    "scripts": {
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier --write .",
+        "prepare": "husky"
+    },
+    "keywords": [
+        "babel",
+        "plugin"
+    ],
+    "author": "Stan",
+    "license": "ISC",
+    "dependencies": {
+        "@babel/core": "^7.28.3",
+        "@babel/generator": "^7.28.3",
+        "@babel/helper-module-imports": "^7.27.1",
+        "@babel/helper-plugin-utils": "^7.28.6",
+        "@babel/parser": "^7.28.3",
+        "@babel/template": "^7.27.2",
+        "@babel/traverse": "^7.28.3",
+        "@babel/types": "^7.28.2",
+        "acorn": "^8.15.0"
+    },
+    "devDependencies": {
+        "@babel/eslint-parser": "^7.28.6",
+        "@babel/plugin-syntax-jsx": "^7.28.6",
+        "@commitlint/cli": "^20.4.3",
+        "@commitlint/config-conventional": "^20.4.3",
+        "commitlint": "^20.4.3",
+        "eslint": "^10.0.2",
+        "eslint-config-prettier": "^10.1.8",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.3.2",
+        "prettier": "^3.8.1",
+        "vitest": "^4.0.18"
+    }
 }

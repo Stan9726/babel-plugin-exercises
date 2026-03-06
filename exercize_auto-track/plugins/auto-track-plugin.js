@@ -20,31 +20,43 @@ const autoTrackPlugin = declare((api, options, dirname) => {
                                 const specifierName = curPath.get('specifiers.0');
                                 if (specifierName.isImportDefaultSpecifier()) {
                                     state.trackImportId = specifierName.toString();
-                                } else if (specifierName.isImportNamespaceSpecifier() || specifierName.isImportSpecifier()) {
+                                } else if (
+                                    specifierName.isImportNamespaceSpecifier() ||
+                                    specifierName.isImportSpecifier()
+                                ) {
                                     state.trackImportId = specifierName.get('local').toString();
                                 }
                                 // 使用 template 创建 tracker() 调用语句的 AST
                                 // 保存到 state 供后续 visitor 使用
-                                state.trackerAST = api.template.statement(`${state.trackImportId}()`)();
+                                state.trackerAST = api.template.statement(
+                                    `${state.trackImportId}()`
+                                )();
                                 curPath.stop(); // 找到后停止遍历
                             }
-                        }
+                        },
                     });
 
                     // 第二步：如果没找到 tracker 导入，自动添加默认导入
                     // 使用 @babel/helper-module-imports 的 addDefault 方法
                     // nameHint 用于生成唯一的标识符名称
                     if (!state.trackImportId) {
-                        state.trackImportId = importModule.addDefault(path, options.trackerPath || 'tracker', {
-                            nameHint: path.scope.generateUid('tracker')
-                        }).name;
+                        state.trackImportId = importModule.addDefault(
+                            path,
+                            options.trackerPath || 'tracker',
+                            {
+                                nameHint: path.scope.generateUid('tracker'),
+                            }
+                        ).name;
                         state.trackerAST = api.template.statement(`${state.trackImportId}()`)();
                     }
-                }
+                },
             },
             // 第三步：为所有函数类型插入 tracker 调用
             // 使用组合 visitor 匹配多种节点类型
-            'ClassMethod|ArrowFunctionExpression|FunctionDeclaration|FunctionExpression'(path, state) {
+            'ClassMethod|ArrowFunctionExpression|FunctionDeclaration|FunctionExpression'(
+                path,
+                state
+            ) {
                 const bodyPath = path.get('body');
                 if (bodyPath.isBlockStatement()) {
                     // 函数已有块级 body，直接在开头插入 tracker 调用
@@ -53,13 +65,15 @@ const autoTrackPlugin = declare((api, options, dirname) => {
                 } else {
                     // 箭头函数简写体：() => expression
                     // 需要转换为块级 body：() => { tracker(); return expression; }
-                    const ast = api.template.statement(`{ ${state.trackImportId}(); return PREV_BODY; }`)({
-                        PREV_BODY: bodyPath.node
+                    const ast = api.template.statement(
+                        `{ ${state.trackImportId}(); return PREV_BODY; }`
+                    )({
+                        PREV_BODY: bodyPath.node,
                     });
                     bodyPath.replaceWith(ast);
                 }
-            }
-        }
+            },
+        },
     };
 });
 

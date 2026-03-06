@@ -140,14 +140,8 @@ describe('autoI18nPlugin', () => {
             const code = `const msg = 'hello';`;
             transform(code);
 
-            const zhFile = fs.readFileSync(
-                path.join(outputDir, 'zh_CN.js'),
-                'utf-8'
-            );
-            const enFile = fs.readFileSync(
-                path.join(outputDir, 'en_US.js'),
-                'utf-8'
-            );
+            const zhFile = fs.readFileSync(path.join(outputDir, 'zh_CN.js'), 'utf-8');
+            const enFile = fs.readFileSync(path.join(outputDir, 'en_US.js'), 'utf-8');
 
             expect(zhFile).toContain('"auto_intl_key_0": "hello"');
             expect(enFile).toContain('"auto_intl_key_0": "hello"');
@@ -157,10 +151,7 @@ describe('autoI18nPlugin', () => {
             const code = `const msg = \`\${a} and \${b}\`;`;
             transform(code);
 
-            const zhFile = fs.readFileSync(
-                path.join(outputDir, 'zh_CN.js'),
-                'utf-8'
-            );
+            const zhFile = fs.readFileSync(path.join(outputDir, 'zh_CN.js'), 'utf-8');
 
             expect(zhFile).toContain('"{0} and {1}"');
         });

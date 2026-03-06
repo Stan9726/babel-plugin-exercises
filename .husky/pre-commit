@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+set -e
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -v '^\.husky/' | grep -E '\.(js|jsx|ts|tsx|json|md)$' || true)
+
+if [ -n "$STAGED_FILES" ]; then
+    npx lint-staged
+    yarn test
+else
+    echo "没有暂存的可格式化文件，跳过测试"
+fi
