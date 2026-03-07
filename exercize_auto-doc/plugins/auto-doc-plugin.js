@@ -60,9 +60,12 @@ const getTypeFromAnnotation = (typeAnnotation) => {
  *
  * 注意：
  * 1. ClassMethod 的返回类型需要特殊处理，因为 getTypeAnnotation() 返回的是 AnyTypeAnnotation
- * 2. 需要额外获取 returnType 属性才能正确获取方法返回类型
+ * 2. 如果 Path 没有 node（如函数没有返回类型），直接返回 undefined
  */
 const resolveType = (path) => {
+    if (!path?.node) {
+        return;
+    }
     const typeAnnotation = path.getTypeAnnotation();
     if (!typeAnnotation) {
         return;
@@ -74,7 +77,7 @@ const resolveType = (path) => {
     // ClassMethod 特殊处理：类型注解可能是 AnyTypeAnnotation，需要获取 returnType
     if (typeAnnotation.type === 'AnyTypeAnnotation') {
         const returnType = path.get('returnType');
-        if (returnType.node) {
+        if (returnType?.node) {
             return getTypeFromAnnotation(returnType.getTypeAnnotation());
         }
     }
