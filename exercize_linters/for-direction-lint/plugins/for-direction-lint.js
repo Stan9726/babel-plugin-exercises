@@ -23,22 +23,28 @@ const forDirectionLint = declare((api, options) => {
                 }
 
                 if (shouldUpdateOperator && shouldUpdateOperator !== updateOperator) {
-                    const tmp = Error.stackTraceLimit;
-                    Error.stackTraceLimit = 0;
-                    errors.push(
-                        path
+                    try {
+                        const tmp = Error.stackTraceLimit;
+                        Error.stackTraceLimit = 0;
+                        const error = path
                             .get('update')
                             .buildCodeFrameError(
                                 `For loop update operator should be '${shouldUpdateOperator}' when test operator is '${testOperator}'`
-                            )
-                    );
-                    Error.stackTraceLimit = tmp;
+                            );
+                        errors.push(error);
+                        Error.stackTraceLimit = tmp;
+                    } catch (e) {
+                        errors.push(e);
+                    }
                 }
             },
         },
 
         post(file) {
-            console.log(file.get('forDirectionErrors'));
+            if (options?.onResult) {
+                const errors = file.get('forDirectionErrors');
+                options.onResult(errors);
+            }
         },
     };
 });

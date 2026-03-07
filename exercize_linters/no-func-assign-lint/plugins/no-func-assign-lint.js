@@ -18,22 +18,28 @@ const noFuncAssignLint = declare((api, options) => {
                     binding?.path?.isFunctionDeclaration() ||
                     binding?.path?.isFunctionExpression()
                 ) {
-                    const tmp = Error.stackTraceLimit;
-                    Error.stackTraceLimit = 0;
-                    errors.push(
-                        path
+                    try {
+                        const tmp = Error.stackTraceLimit;
+                        Error.stackTraceLimit = 0;
+                        const error = path
                             .get('left')
                             .buildCodeFrameError(
                                 `Assignment to function '${assignTarget}' is not allowed`
-                            )
-                    );
-                    Error.stackTraceLimit = tmp;
+                            );
+                        errors.push(error);
+                        Error.stackTraceLimit = tmp;
+                    } catch (e) {
+                        errors.push(e);
+                    }
                 }
             },
         },
 
         post(file) {
-            console.log(file.get('noFuncAssignErrors'));
+            if (options?.onResult) {
+                const errors = file.get('noFuncAssignErrors');
+                options.onResult(errors);
+            }
         },
     };
 });

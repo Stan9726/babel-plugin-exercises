@@ -26,7 +26,9 @@ transformFromAstSync(ast, sourceCode, {
         [
             eqOperatorLint,
             {
-                fix: false,
+                onResult: (errors) => {
+                    console.log(errors);
+                },
             },
         ],
     ],

@@ -23,21 +23,27 @@ const eqOperatorLint = declare((api, options) => {
                         !(left.isLiteral() && right.isLiteral()) &&
                         typeof left.node.value !== typeof right.node.value
                     ) {
-                        const tmp = Error.stackTraceLimit;
-                        Error.stackTraceLimit = 0;
-                        errors.push(
-                            path.buildCodeFrameError(
+                        try {
+                            const tmp = Error.stackTraceLimit;
+                            Error.stackTraceLimit = 0;
+                            const error = path.buildCodeFrameError(
                                 `Use '${operator === '==' ? '===' : '!=='}' instead of '${operator}' for strict equality check`
-                            )
-                        );
-                        Error.stackTraceLimit = tmp;
+                            );
+                            errors.push(error);
+                            Error.stackTraceLimit = tmp;
+                        } catch (e) {
+                            errors.push(e);
+                        }
                     }
                 }
             },
         },
 
         post(file) {
-            console.log(file.get('eqOperatorErrors'));
+            if (options?.onResult) {
+                const errors = file.get('eqOperatorErrors');
+                options.onResult(errors);
+            }
         },
     };
 });

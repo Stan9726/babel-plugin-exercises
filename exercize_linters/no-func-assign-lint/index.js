@@ -17,6 +17,15 @@ const ast = parser.parse(sourceCode, {
 });
 
 transformFromAstSync(ast, sourceCode, {
-    plugins: [noFuncAssignLint],
+    plugins: [
+        [
+            noFuncAssignLint,
+            {
+                onResult: (errors) => {
+                    console.log(errors);
+                },
+            },
+        ],
+    ],
     filename: 'input.js',
 });
