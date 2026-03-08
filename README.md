@@ -7,3 +7,4 @@
 - [自动生成接口文档](./exercize_auto-doc)
 - [lint](./exercize_linters)
 - [类型检查](./exercize_type-checker)
+- [代码混淆&压缩](./exercize_mangle-and-compress)
