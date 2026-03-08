@@ -88,10 +88,9 @@ const typeEval = (node, params, typeParamMap, scope) => {
     const extendsType = resolveType(node.extendsType, typeParamMap, scope);
 
     // 根据条件判断返回 trueType 还是 falseType
+    // 注意: checkType 和 extendsType 都是值（如 '1', '2'）或 undefined，需要严格比较
     return resolveType(
-        checkType === extendsType || checkType instanceof extendsType
-            ? node.trueType
-            : node.falseType,
+        checkType === extendsType ? node.trueType : node.falseType,
         typeParamMap,
         scope
     );
@@ -209,12 +208,14 @@ const typeChecker = declare((api, options) => {
                 }
 
                 // 6. 逐个检查参数类型是否匹配
+                // 跳过没有类型注解的情况（参数类型为 undefined）
                 argTypes.forEach((argType, i) => {
-                    if (argType !== paramTypes[i]) {
+                    const paramType = paramTypes[i];
+                    if (argType && paramType && argType !== paramType) {
                         pushError(
                             errors,
                             path.get('arguments.' + i),
-                            `Argument type '${argType}' does not match parameter type '${paramTypes[i]}'`
+                            `Argument type '${argType}' does not match parameter type '${paramType}'`
                         );
                     }
                 });
