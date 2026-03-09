@@ -208,7 +208,7 @@ function createInterpreter() {
         },
     };
 
-    function run(program, scope, sourceCode) {
+    function run(program, scope, sourceCode, options) {
         try {
             // ast 是 File 节点，程序入口固定是 ast.program
             // sourceCode 只用于报错时打印 code frame，不参与计算
@@ -216,13 +216,15 @@ function createInterpreter() {
         } catch (e) {
             // 统一错误出口：打印节点类型 + 源码定位，便于对照 AST 调试
             const node = e.node || program;
-            console.error(`${node.type}: ${e.message}`);
-            if (node.loc) {
-                console.error(
-                    codeFrameColumns(sourceCode, node.loc, {
-                        highlightCode: true,
-                    })
-                );
+            if (!options?.silent) {
+                console.error(`${node.type}: ${e.message}`);
+                if (node.loc) {
+                    console.error(
+                        codeFrameColumns(sourceCode, node.loc, {
+                            highlightCode: true,
+                        })
+                    );
+                }
             }
             throw e;
         }
