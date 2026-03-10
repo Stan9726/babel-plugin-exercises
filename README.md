@@ -9,3 +9,4 @@
 - [类型检查](./exercize_type-checker)
 - [代码混淆&压缩](./exercize_mangle-and-compress)
 - [解释执行 JS](./exercize_js-interpreter)
+- [构建模块依赖图](./exercize_dep-graph-builder)
